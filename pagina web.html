@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora de Cuotas</title>
+</head>
+<body>
+    <h2>Calculadora de Cuotas</h2>
+    <form action="" method="post">
+        <label for="monto">Monto del préstamo:</label>
+        <input type="number" id="monto" name="monto" required><br><br>
+
+        <label for="porcentaje">Porcentaje de interés mensual (en decimal):</label>
+        <input type="number" step="0.01" id="porcentaje" name="porcentaje" min="0" max="1" required><br><br>
+
+        <label for="plazo">Plazo en meses (máximo 48 meses):</label>
+        <input type="number" id="plazo" name="plazo" min="1" max="48" required><br><br>
+
+        <input type="submit" value="Calcular">
+    </form>
+
+    <?php
+    // Verificar si se enviaron los datos del formulario
+    if ($_SERVER["REQUEST_METHOD"] == "POST") {
+        // Obtener los datos del formulario
+        $monto = $_POST["monto"];
+        $porcentaje = $_POST["porcentaje"];
+        $plazo = $_POST["plazo"];
+
+        // Incluir la función calcularCuotas
+        include 'funciones.php';
+
+        // Calcular las cuotas
+        $cuotas = calcularCuotas($monto, $porcentaje, $plazo);
+
+        // Mostrar las cuotas
+        if (is_array($cuotas)) {
+            echo "<h2>Detalle de las Cuotas</h2>";
+            echo "<table border='1'>";
+            echo "<tr><th>Cuota</th><th>Interés</th><th>Capital</th><th>Saldo Pendiente</th></tr>";
+            foreach ($cuotas as $cuota) {
+                echo "<tr>";
+                echo "<td>" . $cuota['Cuota'] . "</td>";
+                echo "<td>" . $cuota['Interes'] . "</td>";
+                echo "<td>" . $cuota['Capital'] . "</td>";
+                echo "<td>" . $cuota['Saldo Pendiente'] . "</td>";
+                echo "</tr>";
+            }
+            echo "</table>";
+        } else {
+            echo $cuotas;
+        }
+    }
+    ?>
+</body>
+</html>
