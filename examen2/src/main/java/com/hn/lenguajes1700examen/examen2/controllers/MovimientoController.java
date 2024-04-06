@@ -26,7 +26,7 @@ public class MovimientoController {
     }
 
     @GetMapping("/obtenerporcuenta")
-    public List<Movimiento> obtenerMovimientosPorCuenta(@RequestParam String numeroCuenta) {
-        return movimientoServiceImpl.obtenerMovimientosPorCuenta(numeroCuenta);
+    public List<Movimiento> obtenerMovimientosPorCuenta(@RequestParam String numerocuenta) {
+        return movimientoServiceImpl.obtenerMovimientosPorCuenta(numerocuenta);
     }
 }
