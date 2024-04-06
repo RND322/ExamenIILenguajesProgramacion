@@ -22,34 +22,30 @@ public class CuentaServiceImpl implements CuentaService{
 
     @Override
     public Cuenta crearCuenta(Cuenta cuenta) {
-         // Verificar si la cuenta con el número de cuenta dado ya existe
+        
         if (cuentaRepository.findById(cuenta.getNumerocuenta()).isPresent()) {
-            // La cuenta ya existe, no se puede crear de nuevo
+
             throw new RuntimeException("Ya existe una cuenta con el número proporcionado.");
         }
 
-        // Validar el saldo mínimo
+      
         if (cuenta.getSaldo() < 500) {
             throw new RuntimeException("El saldo mínimo para abrir una cuenta es de $500.");
         }
 
-        // Establecer la fecha de apertura como el día de hoy
         cuenta.setFechaapertura(LocalDate.now());
 
-        // Establecer el estado como 'true'
         cuenta.setEstado(true);
 
-        // Guardar la cuenta
         Cuenta cuentaGuardada = cuentaRepository.save(cuenta);
 
-        // Si hay movimientos asociados con la cuenta, guardarlos
         if (cuenta.getMovimientos() != null && !cuenta.getMovimientos().isEmpty()) {
             for (Movimiento movimiento : cuenta.getMovimientos()) {
-                // Asociar el movimiento con la cuenta
+               
                 movimiento.setNumerocuenta(cuentaGuardada.getNumerocuenta());
-                // Establecer la fecha del movimiento como el día de hoy
+               
                 movimiento.setFechamovimiento(LocalDate.now());
-                // Guardar el movimiento
+                
                 movimientoRepository.save(movimiento);
             }
         }
